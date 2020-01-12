@@ -3,11 +3,11 @@ import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import MicroFrontend from './MicroFrontend';
 
 const {
-  REACT_APP_CLIENT_HOST: clientHost,
+    REACT_APP_AUTH_HOST: authHost,
 } = process.env;
 
-const Client = ({ history }) => <MicroFrontend history={history} name="client" host={clientHost} />;
-const Test = () => <h1>Test</h1>;
+const Auth = ({ history }) => <MicroFrontend history={history} name="auth" host={authHost} />;
+const Test = () => <h1>Test <Link to="/">Go Back</Link></h1>;
 
 const App = () => {
   return (
@@ -15,7 +15,7 @@ const App = () => {
       <React.Fragment>
         <Switch>
             <Route exact path="/test" component={Test} />
-            <Route path="/" component={Client} />
+            <Route path="/" component={Auth} />
         </Switch>
       </React.Fragment>
     </BrowserRouter>
