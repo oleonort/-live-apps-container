@@ -9,6 +9,7 @@ const {
 const Auth = ({ history }) => <MicroFrontend history={history} name="auth" host={authHost} />;
 const Test = () => <h1>Test <Link to="/">Go Back</Link></h1>;
 
+// TODO: login should emit an event that login was successful with user info, other apps will listen to it
 const App = () => {
   return (
     <BrowserRouter>

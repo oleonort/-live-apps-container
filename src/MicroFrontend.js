@@ -37,7 +37,7 @@ const MicroFrontend = ({ name, host, history }) => {
 		);
 
 		return () => window[`unmount${capitalizeFirstLetter(name)}`](`${name}-container`);
-	}, [host, name]);
+	}, [host, name, history]);
 
 	return (
 		<div id={`${name}-container`}/>
