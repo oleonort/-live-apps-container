@@ -16,6 +16,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
     networks:
       - frontend
+# container creates network that is shared between other containers
 networks:
   frontend:
     driver: bridge
