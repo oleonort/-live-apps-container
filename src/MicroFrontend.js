@@ -2,41 +2,32 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const MicroFrontend = ({ name, host, history }) => {
-	const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.substring(1);
-	
+	const scriptId = `micro-frontend-script-${name}`;
+
 	useEffect(() => {
-		const mainScriptId = `micro-frontend-main-script-${name}`;
-
 		const renderMicroFrontend = () => {
-			if (!window[`render${capitalizeFirstLetter(name)}`]) return;
-			window[`render${capitalizeFirstLetter(name)}`](`${name}-container`, history);
+			if (!window[`render${name}`]) return;
+			window[`render${name}`](`${name}-container`, history);
 		};
 
-		const createScript = (scriptName, isMainScript) => {
-			const script = document.createElement('script');
-			script.id = isMainScript ? mainScriptId : `micro-frontend-script-${scriptName}-${name}`;
-			script.crossOrigin = 'anonymous';
-			script.src = `${host}/${scriptName}`;
-			script.onload = renderMicroFrontend;
-			document.head.appendChild(script);
-		};
-
-		if (document.getElementById(mainScriptId)) {
+		if (document.getElementById(scriptId)) {
 			renderMicroFrontend();
 			return;
 		}
 
 		fetch(`${host}/asset-manifest.json`)
 			.then(res => res.json())
-			.then(({ entrypoints, files }) => {
-				entrypoints.filter(filePath => filePath.includes('static/js')).forEach(scriptName => {
-					const isMainScript = `/${scriptName}` === files['main.js'];
-					createScript(scriptName, isMainScript);
-				});
+			.then(({ files }) => {
+				const script = document.createElement('script');
+				script.id = scriptId;
+				script.crossOrigin = 'anonymous';
+				script.src = `${host}${files['main.js']}`;
+				script.onload = renderMicroFrontend;
+				document.body.appendChild(script);
 			}
 		);
 
-		return () => window[`unmount${capitalizeFirstLetter(name)}`](`${name}-container`);
+		return () => window[`unmount${name}`](`${name}-container`);
 	}, [host, name, history]);
 
 	return (
