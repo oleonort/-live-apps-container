@@ -18,3 +18,4 @@ CMD ["npm", "start"]
 # to run docker after build
 # docker build -t sample:dev .
 # docker run -v /${PWD}:/app -v /app/node_modules -p 3001:3001 -e CHOKIDAR_USEPOLLING=true --rm sample:dev
+# to reach to server from container change "proxy": "http://server:5000" in package.json
